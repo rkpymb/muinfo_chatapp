@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        domains: ['img.youtube.com', 'localhost','api.magadhuniversityinfo.com',]
+        
+        
+      },
+};
 
 export default nextConfig;

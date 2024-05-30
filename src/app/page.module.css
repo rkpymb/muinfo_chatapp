@@ -1,230 +1,560 @@
-.main {
+.SideBarTitle {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.SideBarTitle span {
+  font-weight: 600;
+}
+
+
+.ContainerMain {
+  margin: auto;
+  width: 80%;
+
+}
+
+.Container {
+  margin: auto;
+  width: 80%;
+
+
+}
+
+.msgBox {
+  width: 100%;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(minmax(100%, 1fr));
+}
+
+
+.msgItem {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  background-color: rgb(212, 205, 219);
+}
+
+.received_msg {
+
+
+  background-color: rgb(123, 0, 255);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgb(235, 232, 227);
+
+
+  color: white;
+  max-width: fit-content;
+  float: right;
+  position: relative;
+  margin-right: 50px;
+
+}
+
+
+.sent_msg {
+
+  background-color: rgb(196, 212, 123);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgb(235, 232, 227);
+  color: rgb(15, 15, 15);
+
+
+  position: relative;
+  width: fit-content;
+
+  margin-left: 50px;
+  display: flex;
+  justify-content: flex-end;
+
+
+}
+
+
+.Chatbox {
+  position: relative;
+  height: 80vh;
+  overflow: 'auto';
+  background-color: rgb(241, 232, 232);
+
+}
+
+.msgTextarea {
+  width: 100%;
+  border: none;
+  outline: none;
+
+  max-height: 100px;
+  resize: none;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.UserAvatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: antiquewhite;
+  object-fit: center;
+}
+
+.ChatWritebox {
+  display: flex;
+  align-items: flex-end;
   justify-content: space-between;
+  background-color: #f0f2f5;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.ChatWriteboxB {
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 100%;
+}
+
+.ChatboxFotter {
+  width: 100%;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 999;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+
+  padding: 10px;
+}
+
+
+
+.OnlineText {
+  font-size: 10px;
+  font-weight: 600;
+  color: blueviolet;
+}
+
+.GroupTop {
+  display: flex;
+  padding: 10px;
+}
+
+.GroupTopB {
+  margin-left: 10px;
+}
+
+.GroupItemLogoSmall {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  padding: 2px;
+
+}
+
+.GroupHeader {
+  width: 100%;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  /* box-shadow: 0 2px 15px rgba(0, 0, 0, .08); */
+
+  border-bottom: 2px solid wheat;
+  background-color: white;
+
+
+}
+
+.GroupHeaderMain {
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  display: flex;
   align-items: center;
-  padding: 6rem;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.Fullbg {
   min-height: 100vh;
 }
 
-.description {
-  display: inherit;
-  justify-content: inherit;
-  align-items: inherit;
-  font-size: 0.85rem;
-  max-width: var(--max-width);
+
+
+.Joinmorebtn {
+  margin: auto;
+  width: 95%;
+  margin-top: 30px;
+}
+
+
+.ChatSection {
+  display: flex;
+
+}
+
+.ChatSectionA {
+  height: 100vh;
+  width: 40%;
+  position: sticky;
+  top: 0;
+  background-color: transparent;
+  overflow: auto;
+  border-right: 2px solid rgb(243, 237, 237);
+
+}
+
+/* Scrollbar styling */
+.ChatSectionA::-webkit-scrollbar {
+  width: 10px;
+}
+
+.ChatSectionA::-webkit-scrollbar-thumb {
+  /* background-color: rgb(243, 237, 237); */
+  border-radius: 10px;
+  border: 2px solid rgb(243, 237, 237);
+  /* Optional: to add some space around the thumb */
+}
+
+.ChatSectionA::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(226, 31, 31);
+}
+
+.ChatSectionA::-webkit-scrollbar-track {
+  background-color: rgb(190, 43, 43);
+  border-radius: 10px;
+}
+
+/* For Firefox */
+.ChatSectionA {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(243, 237, 237);
+}
+
+
+
+.ChatSectionB {
   width: 100%;
-  z-index: 2;
-  font-family: var(--font-mono);
+
+
 }
 
-.description a {
+.craetegrpbtn {
+  padding: 10px;
+}
+
+.AsideTop {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+
+  padding: 15px;
+
+  border-bottom: 2px solid wheat;
+  background-color: white;
 }
 
-.description p {
-  position: relative;
-  margin: 0;
-  padding: 1rem;
-  background-color: rgba(var(--callout-rgb), 0.5);
-  border: 1px solid rgba(var(--callout-border-rgb), 0.3);
-  border-radius: var(--border-radius);
+.AsideTopLogo {
+  border-radius: 10px;
+  padding: 5px;
+
+
+  box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+  width: 70px;
+
 }
 
-.code {
-  font-weight: 700;
-  font-family: var(--font-mono);
+.AsideTopText {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2rem;
+}
+.Mobilepadding{
+  padding: 0px;
+
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
-  max-width: 100%;
-  width: var(--max-width);
+.spcedevider{
+  min-height: 50px;
 }
-
-.card {
-  padding: 1rem 1.2rem;
-  border-radius: var(--border-radius);
-  background: rgba(var(--card-rgb), 0);
-  border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition: background 200ms, border 200ms;
-}
-
-.card span {
-  display: inline-block;
-  transition: transform 200ms;
-}
-
-.card h2 {
+.AsideTopText span {
   font-weight: 600;
-  margin-bottom: 0.7rem;
+  font-size: 15px;
 }
 
-.card p {
-  margin: 0;
-  opacity: 0.6;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  max-width: 30ch;
-  text-wrap: balance;
+.AsideTopText small {
+  font-weight: 600;
+  font-size: 10px;
 }
 
-.center {
+.OnlyDesktop {
+  display: block;
+}
+
+.OnlyMobile {
+  display: none;
+}
+
+
+.ModalHeader {
+  width: 100%;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+
+}
+
+.formbtn {
+  width: 50%;
+  margin-top: 20px;
+
+
+}
+
+.inputItem {
+  margin-top: 20px;
+}
+
+.ModalHeaderMainAB span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ModalHeaderMain {
+  width: 70%;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 5px;
+
+
+
+}
+
+.ModalContainer {
+  width: 60%;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 5px;
+  min-height: 100vh;
+}
+
+.ModalHeaderMainA {
   display: flex;
-  justify-content: center;
   align-items: center;
-  position: relative;
-  padding: 4rem 0;
 }
 
-.center::before {
-  background: var(--secondary-glow);
+.ModalHeaderMainA {
+  width: 100%;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+
+.GroupGrid {
+  margin: 0 auto;
+  display: grid;
+  gap: 0.3rem;
+  grid-template-columns: repeat(minmax(99%, 1fr));
+}
+
+.GroupItemLogo {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  width: 480px;
-  height: 360px;
-  margin-left: -400px;
-}
 
-.center::after {
-  background: var(--primary-glow);
-  width: 240px;
-  height: 180px;
-  z-index: -1;
-}
-
-.center::before,
-.center::after {
-  content: "";
-  left: 50%;
-  position: absolute;
-  filter: blur(45px);
-  transform: translateZ(0);
-}
-
-.logo {
+  padding: 5px;
   position: relative;
-}
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    background: rgba(var(--card-rgb), 0.1);
-    border: 1px solid rgba(var(--card-border-rgb), 0.15);
-  }
+  overflow: hidden;
+  background-color: rgb(165, 165, 232);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  .card:hover span {
-    transform: translateX(4px);
-  }
 }
 
-@media (prefers-reduced-motion) {
-  .card:hover span {
-    transform: none;
-  }
+.GroupItemFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
 }
 
-/* Mobile */
-@media (max-width: 700px) {
-  .content {
-    padding: 4rem;
+.GrouCountItemB {
+  font-size: 10px;
+}
+
+.GroupItemFooterA {
+  width: 50%;
+}
+
+.GroupItemFooterB {
+  width: 50%;
+}
+
+.GrouCountItem {
+  display: flex;
+  align-items: center;
+}
+
+.GroupItemDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.GroupName span {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.GroupName small {
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.MsgTimebox span {
+  font-weight: 500;
+  font-size: 8px;
+}
+
+.Recentmsg span {
+  font-weight: 500;
+  font-size: 10px;
+}
+
+
+.GroupItemTop {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+}
+
+.GroupItemTopB {
+  margin-left: 10px;
+}
+
+.GroupItem {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+
+}
+
+.GroupItem:hover {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+
+}
+
+
+/* mobile css */
+/* mobile css */
+/* mobile css */
+/* mobile css */
+/* mobile css */
+/* mobile css */
+/* mobile css */
+@media only screen and (max-width: 1100px) {
+  .OnlyDesktop {
+    display: none;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 120px;
-    max-width: 320px;
-    text-align: center;
+  .OnlyMobile {
+    display: block;
   }
 
-  .card {
-    padding: 1rem 2.5rem;
+
+  .ModalHeaderMain {
+    width: 100%;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 5px;
+
+
+
   }
 
-  .card h2 {
-    margin-bottom: 0.5rem;
+  .ModalContainer {
+    width: 100%;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 10px;
+    min-height: 100vh;
   }
 
-  .center {
-    padding: 8rem 0 6rem;
+  .formbtn {
+    width: 100%;
+    margin-top: 20px;
+
+
   }
 
-  .center::before {
-    transform: none;
-    height: 300px;
+
+  .ContainerMain {
+    margin: auto;
+    width: 100%;
+
   }
 
-  .description {
-    font-size: 0.8rem;
-  }
+  .Container {
+    margin: auto;
+    width: 100%;
 
-  .description a {
-    padding: 1rem;
-  }
 
-  .description p,
-  .description div {
-    display: flex;
-    justify-content: center;
-    position: fixed;
+  }
+  .ChatSectionB {
     width: 100%;
   }
 
-  .description p {
-    align-items: center;
-    inset: 0 0 auto;
-    padding: 2rem 1rem 1.4rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--background-start-rgb), 1),
-      rgba(var(--callout-rgb), 0.5)
-    );
-    background-clip: padding-box;
-    backdrop-filter: blur(24px);
+  .ChatSection {
+    display: flex;
+    flex-direction: column;
+  
+
   }
 
-  .description div {
-    align-items: flex-end;
-    pointer-events: none;
-    inset: auto 0 0;
-    padding: 2rem;
-    height: 200px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--background-end-rgb)) 40%
-    );
-    z-index: 1;
+  .Joinmorebtn{
+    display: none;
   }
-}
+  .ChatSectionA {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    top: 0;
+    background-color: transparent;
+    overflow: auto;
+    border-right: none;
+    display: none;
 
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-  .grid {
-    grid-template-columns: repeat(2, 50%);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .vercelLogo {
-    filter: invert(1);
+    
   }
 
-  .logo {
-    filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
+  .Mobilepadding{
+    padding: 10px;
   }
-}
 
-@keyframes rotate {
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
 }
