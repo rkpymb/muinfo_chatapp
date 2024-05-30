@@ -197,9 +197,9 @@ const UploadFiles = ({ onImageUpload }) => {
                                     <Image
                                         src={`${MediaFilesUrl}${MediaFilesFolder}${item.postData}`}
                                         alt=""
-                                        fill
-                                        height={'100%'}
-                                        width={'100%'}
+                                        layout='responsive'
+                                        height={100}
+                                        width={100}
                                         blurDataURL={blurredImageData}
                                         placeholder='blur'
                                         style={{ objectFit: "cover" }}

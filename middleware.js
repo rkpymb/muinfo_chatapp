@@ -5,7 +5,7 @@ async function checkUserAuthentication(request) {
   // Retrieve the jwt_token from cookies
   const jwtToken = request.cookies.get('jwt_token');
  
-  if (!jwtToken && !jwtToken.value) {
+  if (!jwtToken) {
     console.log('No jwt token')
     // If jwt_token is not found, redirect to login
     return { isValid: false, redirect: true };
@@ -22,7 +22,7 @@ async function checkUserAuthentication(request) {
     const apiResponse = await fetch(apiEndpoint, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${jwtToken.value}`,
+        'Authorization': `Bearer ${jwtToken.value || jwtToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestBody),
@@ -57,14 +57,14 @@ async function checkUserAuthentication(request) {
 // Middleware function
 export async function middleware(request) {
 
-  const requiresAuthPaths = ['/group',];
+  const requiresAuthPaths = ['/',];
 
   if (requiresAuthPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
     const { response, isValid, redirect } = await checkUserAuthentication(request);
 
     if (redirect) {
 
-      return NextResponse.redirect(new URL('/account/user_login', request.url));
+      return NextResponse.redirect(new URL(`${process.env.Login_url}?redirect=${process.env.Domain}`, request.url));
     }
 
     if (isValid) {
@@ -73,7 +73,7 @@ export async function middleware(request) {
       return response;
     } else {
 
-      return NextResponse.redirect(new URL('/account/user_login', request.url));
+      return NextResponse.redirect(new URL(`${process.env.Login_url}?redirect=${process.env.Domain}`, request.url));
     }
   }
 
@@ -84,11 +84,11 @@ export async function middleware(request) {
 
     if (redirect) {
 
-      return NextResponse.redirect(new URL('/account/user_login', request.url));
+      return NextResponse.redirect(new URL(`${process.env.Login_url}?redirect=${process.env.Domain}`, request.url));
     }
 
     if (isValid) {
-      console.log('response Data');
+     
       if (data.UserData.Role == 1) {
         return response;
       } else {
@@ -97,7 +97,7 @@ export async function middleware(request) {
 
     } else {
 
-      return NextResponse.redirect(new URL('/account/user_login', request.url));
+      return NextResponse.redirect(new URL(`${process.env.Login_url}?redirect=${process.env.Domain}`, request.url));
     }
   }
 

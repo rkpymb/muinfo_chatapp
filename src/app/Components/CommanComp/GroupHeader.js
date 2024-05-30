@@ -10,7 +10,7 @@ import { MediaFilesUrl, MediaFilesFolder } from '/Data/config'
 import { LuMoreVertical, LuPlus, LuUsers2 } from "react-icons/lu";
 
 import IconButton from '@mui/material/IconButton';
-const GroupHeader = ({ GroupData ,TotalMembers}) => {
+const GroupHeader = ({ GroupData, TotalMembers, OnlineInGroup }) => {
 
     const blurredImageData = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88enTfwAJYwPNteQx0wAAAABJRU5ErkJggg==';
     return (
@@ -30,7 +30,7 @@ const GroupHeader = ({ GroupData ,TotalMembers}) => {
                                         layout='fill'
                                         blurDataURL={blurredImageData}
                                         placeholder='blur'
-                                        
+
                                     />
                                 </div>
                             }
@@ -42,17 +42,27 @@ const GroupHeader = ({ GroupData ,TotalMembers}) => {
                                 {!GroupData ? <div>
                                     <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={100} />
                                 </div> :
-                                    <span>{GroupData.GroupName}</span>
+                                    <span className={Mstyles.GroupNameText}>{GroupData.GroupName}</span>
                                 }
 
                                 <div className={Mstyles.GrouCountItemB}>
+                                
 
-
-
+                                    {!GroupData ? 
+                                    <div>
+                                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={50} />
+                                    </div> :
+                                        <div className={Mstyles.SubText}>  <span>{TotalMembers} Members</span></div>
+                                    }
+                                    {!GroupData ? 
+                                     <div className={Mstyles.DotDevider}></div> :
+                                    <div className={Mstyles.DotDevider}>●</div>
+                                    }
+                               
                                     {!GroupData ? <div>
                                         <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={50} />
                                     </div> :
-                                        <span>{TotalMembers} Members</span>
+                                        <div  className={Mstyles.SubText}> <span>{OnlineInGroup} Online</span></div>
                                     }
 
                                 </div>
@@ -62,8 +72,8 @@ const GroupHeader = ({ GroupData ,TotalMembers}) => {
                     </div>
                 </div>
                 <div className={Mstyles.GroupHeaderB}>
-                    {!GroupData ? <div style={{padding:'10px'}}>
-                        <Skeleton variant="text" sx={{ fontSize: '2rem' }}/>
+                    {!GroupData ? <div style={{ padding: '10px' }}>
+                        <Skeleton variant="text" sx={{ fontSize: '2rem' }} />
                     </div> :
                         <IconButton
                             style={{ width: 35, height: 35, }}

@@ -30,10 +30,9 @@ export default function RootLayout({ children }) {
                 <div className={styles.ChatSectionA}>
                   <AutoLogin />
                   <AsideTop />
-                  <CreateGroup />
+                  
                   <MyGroups />
-                 
-                  {/* <GroupLists /> */}
+            
 
                 </div>
                 <div className={styles.ChatSectionB}>

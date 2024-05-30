@@ -132,6 +132,18 @@
 }
 
 
+.DotDevider{
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #23d5ab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 10px;
+
+}
+
 
 .OnlineText {
   font-size: 10px;
@@ -141,6 +153,7 @@
 
 .GroupTop {
   display: flex;
+  align-items: center;
   padding: 10px;
 }
 
@@ -403,9 +416,22 @@
 }
 
 .GrouCountItemB {
-  font-size: 10px;
+ 
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
 }
 
+.GroupNameText{
+  color: #000000;
+ 
+  font-weight: 600;
+}
+.SubText{
+  color: #546561;
+  font-size: 10px;
+  font-weight: 500;
+}
 .GroupItemFooterA {
   width: 50%;
 }

@@ -31,13 +31,18 @@ const page = ({ params }) => {
     const [SendLoadingBtn, setSendLoadingBtn] = useState(false);
     const [IsJoin, setIsJoin] = useState(null);
     const [TotalMembers, setTotalMembers] = useState(0);
+    let [OnlineInGroup, setOnlineInGroup] = useState(0);
+    let [OnlineUsers, setOnlineUsers] = useState([]);
 
     const [roomId, setRoomId] = useState(null);
     const [socket, setSocket] = useState(null);
 
     const blurredImageData = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88enTfwAJYwPNteQx0wAAAABJRU5ErkJggg==';
 
+
+
     useEffect(() => {
+
 
         if (roomId && Contextdata.UserJwtToken) {
             GetData()
@@ -56,6 +61,10 @@ const page = ({ params }) => {
 
             newSocket.on('disconnect', () => {
                 console.log('Disconnected from server');
+
+                if (roomId) {
+                    newSocket.emit('LeaveRoom', roomId);
+                }
             });
 
             newSocket.on('connect_error', (err) => {
@@ -68,10 +77,21 @@ const page = ({ params }) => {
                 }
             };
 
+            
+
             joinRoom();
 
-            newSocket.on('userJoined', (data) => { });
-         
+            newSocket.on('userJoined', (data) => {
+                const NewData = data.roomUsers[slug]
+                setOnlineUsers(NewData);
+
+            });
+
+            newSocket.on('userLeft', (data) => {
+                const NewData = data.roomUsers[slug]
+                setOnlineUsers(NewData); 
+            });
+
 
             setSocket(newSocket);
 
@@ -81,9 +101,17 @@ const page = ({ params }) => {
         }
     }, [roomId, Contextdata.UserJwtToken]);
 
+
     useEffect(() => {
         setRoomId(slug)
     }, [slug]);
+
+    useEffect(() => {
+        console.log(OnlineUsers)
+        setOnlineInGroup(OnlineUsers.length)
+    }, [OnlineUsers]);
+
+
 
 
     const handleChange = (event) => {
@@ -168,12 +196,12 @@ const page = ({ params }) => {
 
                     setTimeout(function () {
                         if (parsed.ReqData && parsed.ReqData.done) {
-                           
+
                             setMsgText('')
                             const SoketData = parsed.ReqData.NewData
                             socket.emit('NewGroupMessage', { SoketData, roomId });
                             setSendLoadingBtn(false)
-                          
+
 
 
                         }
@@ -187,13 +215,13 @@ const page = ({ params }) => {
     return (<div>
 
         <div>
-            <GroupHeader GroupData={GroupData} TotalMembers={TotalMembers} />
+            <GroupHeader GroupData={GroupData} TotalMembers={TotalMembers} OnlineInGroup={OnlineInGroup} />
 
             <div className={Mstyles.Chatbox}
                 id="scrollableDiv"
             >
                 {!Loading &&
-                    <MessageList ParentID={slug} socket={socket} roomId={roomId}/>
+                    <MessageList ParentID={slug} socket={socket} roomId={roomId} />
                 }
 
             </div>
