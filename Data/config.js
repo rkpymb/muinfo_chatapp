@@ -1,19 +1,19 @@
 
 
-export const MediaFilesUrl = 'http://localhost:3001/';
+export const MediaFilesUrl = 'https://api.magadhuniversityinfo.com/';
 export const MediaFilesFolder = 'content/'
 export const FeedimgFolder = 'content'
 export const AdvtContentfolder = 'advt'
 export const FeedVideosBaseUrl = `${MediaFilesUrl}user/FeedvideosStream/`
 export const AppVersionCode = '2.0'
 export const GoogleMapsAPI = 'AIzaSyCd2G5EyfBZtKccEVM24VNGHRm3r_4cOa0'
-export const SvgLogo = 'http://localhost:3001/images/mu_logo.svg'
+export const SvgLogo = 'https://api.magadhuniversityinfo.com/images/mu_logo.svg'
 
 
-export const API_URL = 'http://localhost:3001/';
+export const API_URL = 'https://api.magadhuniversityinfo.com/';
 export const AppName = 'Magadh University Info';
 export const AppDesc = '';
-export const DomainURL = 'http://localhost:3000/';
+export const DomainURL = 'https://magadhuniversityinfo.com/';
 export const CryptoJSKEY = 'XYZ';
 
 export const MYKEY = '86afb51e932292b013a62196f4181f6e'

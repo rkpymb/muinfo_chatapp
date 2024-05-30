@@ -11,12 +11,7 @@ const AsideTop = () => {
 
     const Contextdata = useContext(CheckloginContext)
     const blurredImageData = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88enTfwAJYwPNteQx0wAAAABJRU5ErkJggg==';
-    useEffect(() => {
-        console.log('Navbar');
-
-
-
-    }, []);
+    
     return (
         <div className={Mstyles.AsideTop}>
             <div className={Mstyles.UserAvatar}>
