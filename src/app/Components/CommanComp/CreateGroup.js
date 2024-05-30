@@ -81,12 +81,12 @@ const Demo = ({ SType }) => {
                         setRules(null)
                         setDescription(null)
                         setOpenEdit(false);
-                      
+
                     }
 
-                    if(parsed.ReqData.error && parsed.ReqData.error.msg){
+                    if (parsed.ReqData.error && parsed.ReqData.error.msg) {
                         Contextdata.ChangeAlertData(`${parsed.ReqData.error.msg}`, 'warning');
-                    }else if (parsed.ReqData.error){
+                    } else if (parsed.ReqData.error) {
                         Contextdata.ChangeAlertData(`Something Went Wrong`, 'warning');
                     }
                 })
@@ -95,113 +95,120 @@ const Demo = ({ SType }) => {
 
     return (
         <div>
+            {Contextdata.UserData.Role == 1 &&
 
-            <div className={Mstyles.craetegrpbtn}>
+                <div>
+                       <div style={{ height: '15px' }}></div>
+                    <div className={Mstyles.craetegrpbtn}>
 
-                <LoadingButton
-                    fullWidth
-                    onClick={handleClickOpen}
-                    startIcon={<LuPlus />}
-                    loading={false}
-                    loadingPosition="end"
-                    variant='contained'
-                >
-                    <span>Create New Group</span>
-                </LoadingButton>
-            </div>
+                        <LoadingButton
+                            fullWidth
+                            onClick={handleClickOpen}
+                            startIcon={<LuPlus />}
+                            loading={false}
+                            loadingPosition="end"
+                            variant='contained'
+                        >
+                            <span>Create New Group</span>
+                        </LoadingButton>
+                    </div>
+                    <div style={{ height: '15px' }}></div>
 
 
-            <Dialog
-                fullScreen
-                open={OpenEdit}
-                onClose={handleCloseEdit}
-                TransitionComponent={Transition}
-            >
-                <div className={Mstyles.ModalHeader}>
-                    <div className={Mstyles.ModalHeaderMain}>
-                        <div className={Mstyles.ModalHeaderMainA}>
-                            <div className={Mstyles.ModalHeaderMainAA}>
-                                <IconButton
-                                    onClick={handleCloseEdit}
-                                    aria-label="toggle password visibility"
-                                    style={{ width: 40, height: 40, }}
-                                >
-                                    <LuArrowLeft />
-                                </IconButton>
+                    <Dialog
+                        fullScreen
+                        open={OpenEdit}
+                        onClose={handleCloseEdit}
+                        TransitionComponent={Transition}
+                    >
+                        <div className={Mstyles.ModalHeader}>
+                            <div className={Mstyles.ModalHeaderMain}>
+                                <div className={Mstyles.ModalHeaderMainA}>
+                                    <div className={Mstyles.ModalHeaderMainAA}>
+                                        <IconButton
+                                            onClick={handleCloseEdit}
+                                            aria-label="toggle password visibility"
+                                            style={{ width: 40, height: 40, }}
+                                        >
+                                            <LuArrowLeft />
+                                        </IconButton>
+                                    </div>
+                                    <div className={Mstyles.ModalHeaderMainAB}>
+                                        <span>Create New Group</span>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div className={Mstyles.ModalHeaderMainAB}>
-                                <span>Create New Group</span>
+                        </div>
+
+                        <div className={Mstyles.ModalContainer}>
+
+                            <div className={Mstyles.AddCatBox}>
+                                <form onSubmit={AddGroup} className={Mstyles.fadeinAnimation}>
+
+                                    <div className={Mstyles.inputItem}>
+                                        <TextField
+                                            required
+                                            label="Group Name"
+                                            fullWidth
+                                            value={GroupName}
+                                            onInput={e => setGroupName(e.target.value)}
+
+                                        />
+                                    </div>
+                                    <div className={Mstyles.inputItem}>
+                                        <TextField
+                                            required
+                                            label="Group Description"
+                                            fullWidth
+                                            value={Description}
+                                            onInput={e => setDescription(e.target.value)}
+
+                                        />
+                                    </div>
+                                    <div className={Mstyles.inputItem}>
+                                        <TextField
+                                            required
+                                            label="Group Rules"
+                                            fullWidth
+                                            value={Rules}
+                                            onInput={e => setRules(e.target.value)}
+
+                                        />
+                                    </div>
+
+                                    <div className={Mstyles.inputItem}>
+                                        <Uploadimg onImageUpload={onImageUpload} />
+                                    </div>
+
+                                    <div className={Mstyles.formbtn}>
+                                        <LoadingButton
+                                            fullWidth
+                                            onClick={AddGroup}
+                                            endIcon={<LuChevronRight />}
+                                            loading={LoadingBtn}
+                                            desabled={LoadingBtn}
+                                            loadingPosition="end"
+                                            variant='contained'
+                                        >
+                                            <span>Create Group</span>
+                                        </LoadingButton>
+
+
+                                    </div>
+
+                                </form>
+
                             </div>
 
                         </div>
-                    </div>
-                </div>
-
-                <div className={Mstyles.ModalContainer}>
-
-                    <div className={Mstyles.AddCatBox}>
-                        <form onSubmit={AddGroup} className={Mstyles.fadeinAnimation}>
-
-                            <div className={Mstyles.inputItem}>
-                                <TextField
-                                    required
-                                    label="Group Name"
-                                    fullWidth
-                                    value={GroupName}
-                                    onInput={e => setGroupName(e.target.value)}
-
-                                />
-                            </div>
-                            <div className={Mstyles.inputItem}>
-                                <TextField
-                                    required
-                                    label="Group Description"
-                                    fullWidth
-                                    value={Description}
-                                    onInput={e => setDescription(e.target.value)}
-
-                                />
-                            </div>
-                            <div className={Mstyles.inputItem}>
-                                <TextField
-                                    required
-                                    label="Group Rules"
-                                    fullWidth
-                                    value={Rules}
-                                    onInput={e => setRules(e.target.value)}
-
-                                />
-                            </div>
-
-                            <div className={Mstyles.inputItem}>
-                                <Uploadimg onImageUpload={onImageUpload} />
-                            </div>
-
-                            <div className={Mstyles.formbtn}>
-                                <LoadingButton
-                                    fullWidth
-                                    onClick={AddGroup}
-                                    endIcon={<LuChevronRight />}
-                                    loading={LoadingBtn}
-                                    desabled={LoadingBtn}
-                                    loadingPosition="end"
-                                    variant='contained'
-                                >
-                                    <span>Create Group</span>
-                                </LoadingButton>
 
 
-                            </div>
 
-                        </form>
-
-                    </div>
+                    </Dialog >
 
                 </div>
-
-
-
-            </Dialog >
+            }
 
         </div >
     )

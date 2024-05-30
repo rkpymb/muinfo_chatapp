@@ -6,6 +6,9 @@
 .SideBarTitle span {
   font-weight: 600;
 }
+.MobileNavb{
+  display: none;
+}
 
 
 .ContainerMain {
@@ -427,6 +430,11 @@
  
   font-weight: 600;
 }
+.MemberCountText span{
+  color: #546561;
+  font-size: 10px;
+  font-weight: 500;
+}
 .SubText{
   color: #546561;
   font-size: 10px;
@@ -494,6 +502,16 @@
 
 }
 
+
+.AllGroupItem {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
 
 /* mobile css */
 /* mobile css */
@@ -581,6 +599,24 @@
 
   .Mobilepadding{
     padding: 10px;
+  }
+
+  .SideBarTitle {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .SideBarTitle span {
+    font-weight: 600;
+  }
+  .MobileNavb {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  
   }
 
 }

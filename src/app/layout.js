@@ -9,7 +9,7 @@ import GroupLists from "./Components/CommanComp/GroupLists";
 import MyGroups from "./Components/CommanComp/MyGroups";
 import AutoLogin from "./Components/CommanComp/AutoLogin";
 
-
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 import CheckloginStates from '../../context/auth/CheckloginStates'
 
@@ -27,14 +27,21 @@ export default function RootLayout({ children }) {
           <div className={styles.Fullbg}>
             <div className={styles.Container}>
               <div className={styles.ChatSection}>
-                <div className={styles.ChatSectionA}>
-                  <AutoLogin />
-                  <AsideTop />
-                  
-                  <MyGroups />
-            
+                {isBrowser &&
+                  <div className={styles.ChatSectionA}>
+                    <AutoLogin />
 
-                </div>
+                   
+                    <AsideTop />
+
+                    <MyGroups />
+                   
+                    <CreateGroup/>
+                  
+
+                  </div>
+                }
+
                 <div className={styles.ChatSectionB}>
                   {children}
                   <div className={styles.FooterDevider}></div>

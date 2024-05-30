@@ -122,14 +122,7 @@ const MyGroups = () => {
                 loader={<div style={{ textAlign: 'center', margin: 'auto', marginTop: '20px' }} >
                     <CircularProgress size={25} color="success" />
                 </div>}
-                endMessage={
-                    <div>
-                        <div style={{ textAlign: 'center', margin: 'auto', marginTop: '20px' }} >
-                            <b>Yay! You have seen it all 🎉</b>
-                        </div>
-
-                    </div>
-                }
+              
             >
 
 
@@ -180,24 +173,7 @@ const MyGroups = () => {
 
 
             </InfiniteScroll>
-            {!Contextdata.UserLogin ?
-               null :
-
-                <div className={Mstyles.Joinmorebtn}>
-                    <LoadingButton
-                        fullWidth
-                        onClick={() => router.push(`/group`)}
-                        startIcon={<LuPlus />}
-                        loading={false}
-                        loadingPosition="end"
-                        variant='contained'
-                    >
-                        <span>Join More Groups</span>
-                    </LoadingButton>
-
-                </div>
-
-            }
+            
 
 
 

@@ -49,6 +49,7 @@ const FeedlistMain = () => {
             const parsed = await data.json();
 
             if (parsed.ReqData) {
+                console.log(parsed.ReqData)
 
                 if (parsed.ReqData.DataList.length === 0) {
                     setHasMore(false);
@@ -118,75 +119,62 @@ const FeedlistMain = () => {
                 loader={<div style={{ textAlign: 'center', margin: 'auto', marginTop: '20px' }} >
                     <CircularProgress size={25} color="success" />
                 </div>}
-                endMessage={
-                    <div>
-                        <div style={{ textAlign: 'center', margin: 'auto', marginTop: '20px' }} >
-                            <b>Yay! You have seen it all 🎉</b>
-                        </div>
 
-                    </div>
-                }
             >
 
                 <div className={Mstyles.GroupGrid}>
                     {FeedList.map((item, index) => {
-                        return <div key={index} className={Mstyles.GroupItem} >
+                        return <div key={index} className={Mstyles.AllGroupItem} onClick={() => router.push(`/group/${item.GroupData.GroupID}`)}>
                             <div className={Mstyles.GroupItemTop}>
                                 <div className={Mstyles.GroupItemToA}>
                                     <div className={Mstyles.GroupItemLogo}>
                                         <Image
-                                            src={`${MediaFilesUrl}${MediaFilesFolder}${item.GroupLogo}`}
+                                            src={`${MediaFilesUrl}${MediaFilesFolder}${item.GroupData.GroupLogo}`}
                                             alt=""
                                             layout='responsive'
                                             height={100}
                                             width={100}
                                             blurDataURL={blurredImageData}
                                             placeholder='blur'
-                                            style={{ objectFit: "cover", borderRadius: '5px' }}
+                                            style={{ objectFit: "cover", }}
                                         />
                                     </div>
 
                                 </div>
                                 <div className={Mstyles.GroupItemTopB}>
                                     <div className={Mstyles.GroupItemDetails}>
-                                        <span>{item.GroupName}</span>
-                                        <div style={{ height: '2px' }}></div>
-                                        <small>{item.Description.slice(0, 70)}</small>
+                                        <div className={Mstyles.GroupName}>
+                                            <span>{item.GroupData.GroupName}</span>
+
+                                        </div>
+
+                                        <div className={Mstyles.MemberCountText}>
+                                            <span>{item.TotalMembers} Members</span>
+                                        </div>
+                                        <div className={Mstyles.Recentmsg}>
+                                            <span>join Group to start conversation</span>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
-
-                            <div className={Mstyles.GroupItemFooter}>
-                                <div className={Mstyles.GroupItemFooterA}>
-                                    <div className={Mstyles.GrouCountItem}>
-                                        <div className={Mstyles.GrouCountItemA}>
-                                            <IconButton
-                                                style={{ width: 35, height: 35, }}
-                                            >
-                                                <LuUsers2 />
-                                            </IconButton>
-                                        </div>
-                                        <div className={Mstyles.GrouCountItemB}>
-                                            200K + Members
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div className={Mstyles.GroupItemFooterB}>
-                                    <LoadingButton
-                                        onClick={() => router.push(`/group/${item.GroupID}`)}
-                                        fullWidth
-                                        size='small'
-                                        startIcon={<LuPlus />}
-                                        loading={false}
-                                        loadingPosition="end"
-                                        variant='outlined'
-                                    >
-                                        <span>Join</span>
-                                    </LoadingButton>
-                                </div>
-
+                            <div>
+                            <LoadingButton
+                                            fullWidth
+                                           
+                                            endIcon={<LuPlus />}
+                                            loading={false}
+                                            desabled={false}
+                                            loadingPosition="end"
+                                            variant='contained'
+                                            size='small'
+                                        >
+                                            <span>Join</span>
+                                        </LoadingButton>
                             </div>
+
+
                         </div>
                     }
 
