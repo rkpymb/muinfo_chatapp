@@ -19,7 +19,7 @@ import IconButton from '@mui/material/IconButton';
 let defaultStartIndex = 1;
 let hasMore = true;
 
-const MessageList = ({ ParentID, socket ,roomId}) => {
+const MessageList = ({ ParentID, socket, roomId }) => {
     const Contextdata = useContext(CheckloginContext)
     const [FeedList, setFeedList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -128,7 +128,7 @@ const MessageList = ({ ParentID, socket ,roomId}) => {
                     const msg_id = parsed.ReqData.msg_id
                     socket.emit('DeletedMessage', { msg_id, roomId });
 
-                    
+
 
                 }
 
@@ -210,7 +210,7 @@ const MessageList = ({ ParentID, socket ,roomId}) => {
             return prevData.filter(item => item.PostData._id !== id);
         });
     };
-    
+
 
     useEffect(() => {
         if (socket) {
@@ -267,7 +267,18 @@ const MessageList = ({ ParentID, socket ,roomId}) => {
                     ))}
                 </div>
             </main>
-            {loading && <CircularProgress />}
+
+
+            {loading &&
+
+                <div className={Mstyles.CenterLoader}>
+                    <CircularProgress />
+
+                </div>
+
+
+            }
+
         </div>
     );
 };

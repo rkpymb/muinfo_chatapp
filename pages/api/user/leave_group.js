@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default function handler(req, res) {
     if (req.method === 'POST') {
-
+      
         const token = getTokenFromCookie(req);
 
         if (token) {
@@ -11,20 +11,15 @@ export default function handler(req, res) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             };
-
-            axios.post(`${process.env.API_URL}user/create_group`, {
+            
+            axios.post(`${process.env.API_URL}chatapi/leave_group`, { 
                 token: process.env.MYKEY,
-
-                GroupName: req.body.GroupName,
-                GroupLogo: req.body.GroupLogo,
-                Tagline: req.body.Tagline,
-                Description: req.body.Description
-
-
+                GroupID: req.body.GroupID,
+              
             }, { headers }).then((response) => {
-
-                res.status(200).json({ ReqData: response.data })
-
+           
+                res.status(200).json({ ReqData:response.data })
+    
             }).catch((error) => {
                 console.error(error);
                 res.status(500).json({ error: error });

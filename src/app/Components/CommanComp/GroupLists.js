@@ -122,7 +122,7 @@ const FeedlistMain = () => {
 
             >
 
-                <div className={Mstyles.GroupGrid}>
+                <div className={Mstyles.GroupGridAll}>
                     {FeedList.map((item, index) => {
                         return <div key={index} className={Mstyles.AllGroupItem} onClick={() => router.push(`/group/${item.GroupData.GroupID}`)}>
                             <div className={Mstyles.GroupItemTop}>
@@ -147,12 +147,11 @@ const FeedlistMain = () => {
                                             <span>{item.GroupData.GroupName}</span>
 
                                         </div>
-
                                         <div className={Mstyles.MemberCountText}>
                                             <span>{item.TotalMembers} Members</span>
                                         </div>
-                                        <div className={Mstyles.Recentmsg}>
-                                            <span>join Group to start conversation</span>
+                                        <div className={Mstyles.Tagline}>
+                                            <span>{item.GroupData.Tagline}</span>
                                         </div>
 
 
@@ -160,18 +159,18 @@ const FeedlistMain = () => {
                                 </div>
                             </div>
                             <div>
-                            <LoadingButton
-                                            fullWidth
-                                           
-                                            endIcon={<LuPlus />}
-                                            loading={false}
-                                            desabled={false}
-                                            loadingPosition="end"
-                                            variant='contained'
-                                            size='small'
-                                        >
-                                            <span>Join</span>
-                                        </LoadingButton>
+                                <LoadingButton
+                                    fullWidth
+
+                                    endIcon={<LuPlus />}
+                                    loading={false}
+                                    desabled={false}
+                                    loadingPosition="end"
+                                    variant='contained'
+                                    size='small'
+                                >
+                                    <span>Join</span>
+                                </LoadingButton>
                             </div>
 
 

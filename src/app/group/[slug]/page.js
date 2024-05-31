@@ -4,7 +4,7 @@ import Mstyles from "@/app/page.module.css";
 import GroupHeader from '../../Components/CommanComp/GroupHeader'
 
 import MessageList from '../../Components/Chat/MessageList'
-
+import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import CheckloginContext from '/context/auth/CheckloginContext'
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -44,8 +44,8 @@ const page = ({ params }) => {
     useEffect(() => {
 
 
-        if (roomId && Contextdata.UserJwtToken) {
-            GetData()
+        if (IsJoin && roomId && Contextdata.UserJwtToken) {
+
 
             const newSocket = io(API_URL, {
                 auth: {
@@ -77,7 +77,7 @@ const page = ({ params }) => {
                 }
             };
 
-            
+
 
             joinRoom();
 
@@ -89,7 +89,7 @@ const page = ({ params }) => {
 
             newSocket.on('userLeft', (data) => {
                 const NewData = data.roomUsers[slug]
-                setOnlineUsers(NewData); 
+                setOnlineUsers(NewData);
             });
 
 
@@ -99,11 +99,14 @@ const page = ({ params }) => {
                 newSocket.disconnect();
             };
         }
-    }, [roomId, Contextdata.UserJwtToken]);
+    }, [roomId, Contextdata.UserJwtToken, IsJoin]);
 
 
     useEffect(() => {
         setRoomId(slug)
+        if (slug) {
+            GetData()
+        }
     }, [slug]);
 
     useEffect(() => {
@@ -139,11 +142,12 @@ const page = ({ params }) => {
 
                 setTimeout(function () {
                     if (parsed.ReqData && parsed.ReqData.Group) {
+                        console.log(parsed.ReqData.Group)
                         setGroupData(parsed.ReqData.Group)
                         setIsJoin(parsed.ReqData.IsJoin)
                         setTotalMembers(parsed.ReqData.TotalMembers)
                         setLoading(false)
-                        // router.push(`/group/${slug}`)
+
 
 
                     }
@@ -171,9 +175,37 @@ const page = ({ params }) => {
                 setTimeout(function () {
                     if (parsed.ReqData && parsed.ReqData.done) {
                         setLoadingBtn(false)
+                        GetData()
                     }
-                }, 100);
+                }, 3000);
             })
+    }
+    const LeaveGroup = async () => {
+
+        let text = "Do you want to leave this group ?";
+        if (confirm(text) == true) {
+            const sendUM = { GroupID: slug }
+            const data = await fetch("/api/user/leave_group", {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(sendUM)
+            }).then((a) => {
+                return a.json();
+            })
+                .then((parsed) => {
+
+                    setTimeout(function () {
+                        if (parsed.ReqData && parsed.ReqData.done) {
+
+                            router.push('/group')
+                        }
+                    }, 3000);
+                })
+        }
+
+
     }
     const send_group_msg = async () => {
         if (MsgText !== null) {
@@ -214,86 +246,164 @@ const page = ({ params }) => {
 
     return (<div>
 
-        <div>
-            <GroupHeader GroupData={GroupData} TotalMembers={TotalMembers} OnlineInGroup={OnlineInGroup} />
+        {IsJoin ?
+            <div>
+                <GroupHeader GroupData={GroupData} TotalMembers={TotalMembers} OnlineInGroup={OnlineInGroup} LeaveGroup={LeaveGroup} />
 
-            <div className={Mstyles.Chatbox}
-                id="scrollableDiv"
-            >
-                {!Loading &&
-                    <MessageList ParentID={slug} socket={socket} roomId={roomId} />
-                }
-
-            </div>
-            {!Loading &&
-                <div className={Mstyles.ChatboxFotter}>
-                    {IsJoin !== null ?
-                        <div className={Mstyles.ChatWritebox}>
-                            <div className={Mstyles.ChatWriteboxA}>
-                                <IconButton
-                                    style={{ width: 45, height: 45, }}
-                                    onClick={handleClick}
-                                >
-                                    <GrAttachment />
-                                </IconButton>
-                            </div>
-                            <div className={Mstyles.ChatWriteboxB}>
-
-                                <TextField
-
-                                    multiline
-                                    fullWidth
-                                    variant="standard"
-                                    maxRows={4}
-                                    value={MsgText}
-                                    onChange={handleChange}
-
-                                />
-                            </div>
-                            <div className={Mstyles.ChatWriteboxC}>
-
-                                <IconButton
-                                    style={{ width: 45, height: 45, }}
-                                    onClick={send_group_msg}
-                                    loading={SendLoadingBtn}
-                                    desabled={SendLoadingBtn}
-                                    loadingPosition="end"
-
-                                >
-                                    <LuSendHorizonal />
-                                </IconButton>
-
-
-                            </div>
-
-                        </div> :
-                        <div>
-                            <div className={Mstyles.craetegrpbtn}>
-
-                                <LoadingButton
-                                    fullWidth
-                                    onClick={JoinGroup}
-
-                                    startIcon={<LuPlus />}
-                                    loading={LoadingBtn}
-                                    desabled={LoadingBtn}
-                                    loadingPosition="end"
-                                    variant='contained'
-                                >
-                                    <span>Join Group</span>
-                                </LoadingButton>
-                            </div>
-                        </div>
+                <div className={Mstyles.Chatbox}
+                    id="scrollableDiv"
+                >
+                    {!Loading &&
+                        <MessageList ParentID={slug} socket={socket} roomId={roomId} />
                     }
 
+                </div>
+                {!Loading &&
+                    <div className={Mstyles.ChatboxFotter}>
+                        {IsJoin !== null ?
+                            <div className={Mstyles.ChatWritebox}>
+                                <div className={Mstyles.ChatWriteboxA}>
+                                    <IconButton
+                                        style={{ width: 45, height: 45, }}
+                                        onClick={handleClick}
+                                    >
+                                        <GrAttachment />
+                                    </IconButton>
+                                </div>
+                                <div className={Mstyles.ChatWriteboxB}>
+
+                                    <TextField
+                                        placeholder="Write message ..."
+                                        autoFocus={true}
+                                        multiline
+                                        fullWidth
+                                        variant="standard"
+                                        maxRows={4}
+                                        value={MsgText}
+                                        onChange={handleChange}
+
+                                    />
+                                </div>
+                                <div className={Mstyles.ChatWriteboxC}>
+
+                                    <IconButton
+                                        style={{ width: 45, height: 45, }}
+                                        onClick={send_group_msg}
+                                        loading={SendLoadingBtn}
+                                        desabled={SendLoadingBtn}
+                                        loadingPosition="end"
+
+                                    >
+                                        <LuSendHorizonal />
+                                    </IconButton>
+
+
+                                </div>
+
+                            </div> :
+                            null
+                        }
+
+
+                    </div>
+
+                }
+
+
+
+            </div> :
+            <div>
+
+                <div className={Mstyles.JoinGroupBox}>
+
+                    <div className={Mstyles.JBTop}>
+                        {!GroupData ? <div>
+                            <Skeleton variant="circular" width={70} height={70} />
+                        </div> :
+
+                            <div className={Mstyles.GroupAvatarBig}>
+
+                                <Image
+                                    src={`${MediaFilesUrl}${MediaFilesFolder}${GroupData && GroupData.GroupLogo}`}
+                                    alt=""
+                                    layout='fill'
+                                    blurDataURL={blurredImageData}
+                                    placeholder='blur'
+
+                                />
+
+                            </div>
+                        }
+                        <div style={{ height: '20px' }}></div>
+
+                        {!GroupData ? <div style={{ width: '40%', margin: 'auto' }}>
+                            <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={'100%'} />
+                        </div> :
+                            <div className={Mstyles.GroupNameT}>
+                                <span>{GroupData.GroupName}</span>
+                            </div>
+                        }
+
+                        {!GroupData ? <div style={{ width: '60%', margin: 'auto' }}>
+                            <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={'100%'} />
+                        </div> :
+                            <div className={Mstyles.Tagline}>
+                                <span>{GroupData.Tagline}</span>
+                            </div>
+                        }
+                        <div style={{ height: '20px' }}></div>
+                        {Loading ? <div>
+                            <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={100} />
+                        </div> :
+                            <div className={Mstyles.TotalMembers}>
+                                <span>{TotalMembers} Members</span>
+                            </div>
+                        }
+                        <div style={{ height: '20px' }}></div>
+                        {!GroupData ? null :
+                            <div className={Mstyles.Description}>
+                                <span>{GroupData.Description}</span>
+                            </div>
+                        }
+
+
+
+
+                    </div>
 
                 </div>
+                {!Loading &&
+                    <div className={Mstyles.ChatboxFotter}>
+                        <div className={Mstyles.JoinbtnBox}>
 
-            }
+                            <LoadingButton
+                                fullWidth
+                                onClick={JoinGroup}
+
+                                startIcon={<LuPlus />}
+                                loading={LoadingBtn}
+                                desabled={LoadingBtn}
+                                loadingPosition="end"
+                                variant='contained'
+                            >
+                                <span>Join Group</span>
+                            </LoadingButton>
+                        </div>
+
+
+                    </div>
+
+                }
 
 
 
-        </div>
+            </div>
+
+
+
+        }
+
+
 
 
 

@@ -10,7 +10,7 @@ import { LuArrowLeft, LuSearch, LuChevronRight, LuMinus, } from "react-icons/lu"
 import Mstyles from "@/app/page.module.css";
 import { MediaFilesUrl, MediaFilesFolder, FeedimgFolder, DomainURL } from '/Data/config';
 import IconButton from '@mui/material/IconButton';
-import Uploadimg from '../CommanComp/Uploadimg'
+import DpUploader from '../CommanComp/DpUploader'
 import Slide from '@mui/material/Slide';
 
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -29,7 +29,7 @@ const Demo = ({ SType }) => {
     const [OpenEdit, setOpenEdit] = React.useState(false);
     const [LoadingBtn, setLoadingBtn] = React.useState(false);
     const [GroupName, setGroupName] = useState(null);
-    const [Rules, setRules] = useState([]);
+    const [Tagline, setTagline] = useState([]);
     const [Description, setDescription] = useState('');
     const [GroupLogo, setGroupLogo] = useState(null);
 
@@ -45,8 +45,7 @@ const Demo = ({ SType }) => {
 
     const onImageUpload = (Filedata) => {
         if (Filedata) {
-            console.log(Filedata.postData)
-            setGroupLogo(Filedata.postData)
+            setGroupLogo(Filedata)
         } else {
             setGroupLogo(null)
         }
@@ -55,12 +54,12 @@ const Demo = ({ SType }) => {
     };
 
     const AddGroup = async () => {
-        if (GroupName !== null && GroupLogo !== null && Rules !== null && Description !== null) {
+        if (GroupName !== null && GroupLogo !== null && Tagline !== null && Description !== null) {
             setLoadingBtn(true)
             const sendUM = {
                 GroupName: GroupName,
                 GroupLogo: GroupLogo,
-                Rules: Rules,
+                Tagline: Tagline,
                 Description: Description
             }
             const data = await fetch("/api/user/create_group", {
@@ -78,7 +77,7 @@ const Demo = ({ SType }) => {
                         Contextdata.ChangeAlertData(`Group Created`, 'success');
                         setGroupName(null)
                         setGroupLogo(null)
-                        setRules(null)
+                        setTagline(null)
                         setDescription(null)
                         setOpenEdit(false);
 
@@ -98,7 +97,7 @@ const Demo = ({ SType }) => {
             {Contextdata.UserData.Role == 1 &&
 
                 <div>
-                       <div style={{ height: '15px' }}></div>
+                    <div style={{ height: '15px' }}></div>
                     <div className={Mstyles.craetegrpbtn}>
 
                         <LoadingButton
@@ -169,16 +168,18 @@ const Demo = ({ SType }) => {
                                     <div className={Mstyles.inputItem}>
                                         <TextField
                                             required
-                                            label="Group Rules"
+                                            label="Group Tagline"
                                             fullWidth
-                                            value={Rules}
-                                            onInput={e => setRules(e.target.value)}
+                                            value={Tagline}
+                                            onInput={e => setTagline(e.target.value)}
 
                                         />
                                     </div>
 
-                                    <div className={Mstyles.inputItem}>
-                                        <Uploadimg onImageUpload={onImageUpload} />
+
+
+                                    <div className={Mstyles.EditPBoxProfile}>
+                                        <DpUploader onImageUpload={onImageUpload} />
                                     </div>
 
                                     <div className={Mstyles.formbtn}>

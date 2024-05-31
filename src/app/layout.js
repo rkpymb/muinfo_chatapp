@@ -9,6 +9,9 @@ import GroupLists from "./Components/CommanComp/GroupLists";
 import MyGroups from "./Components/CommanComp/MyGroups";
 import AutoLogin from "./Components/CommanComp/AutoLogin";
 
+import { ThemeProvider, CssBaseline, Button } from '@mui/material';
+import { darkTheme, lightTheme } from '@/app/themes/themes';
+
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 import CheckloginStates from '../../context/auth/CheckloginStates'
@@ -20,36 +23,43 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CheckloginStates >
-          <div className={styles.Fullbg}>
-            <div className={styles.Container}>
-              <div className={styles.ChatSection}>
-                {isBrowser &&
-                  <div className={styles.ChatSectionA}>
-                    <AutoLogin />
 
-                   
-                    <AsideTop />
+        <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+          <CheckloginStates >
+            <div className={styles.Fullbg}>
+              <div className={styles.Container}>
+                <div className={styles.ChatSection}>
+                  {isBrowser &&
+                    <div className={styles.ChatSectionA}>
+                      <AutoLogin />
 
-                    <MyGroups />
-                   
-                    <CreateGroup/>
-                  
 
+                      <AsideTop />
+
+                      <MyGroups />
+
+                      <CreateGroup />
+
+
+                    </div>
+                  }
+
+                  <div className={styles.ChatSectionB}>
+                    {children}
+                    <div className={styles.FooterDevider}></div>
                   </div>
-                }
-
-                <div className={styles.ChatSectionB}>
-                  {children}
-                  <div className={styles.FooterDevider}></div>
                 </div>
               </div>
             </div>
-          </div>
-        </CheckloginStates >
+          </CheckloginStates >
+
+        </ThemeProvider>
+
       </body>
     </html>
   );
