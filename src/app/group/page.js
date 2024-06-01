@@ -4,10 +4,20 @@ import Mstyles from "@/app/page.module.css";
 import GroupLists from '../Components/CommanComp/GroupLists'
 import AsideTop from '../Components/CommanComp/AsideTop'
 import MyGroups from '../Components/CommanComp/MyGroups'
+import CheckloginContext from '/context/auth/CheckloginContext'
 
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 const page = () => {
+  const Contextdata = useContext(CheckloginContext)
+
+  useEffect(() => {
+    if (Contextdata.UserLogin) {
+      Contextdata.ChangeMainLoader(false)
+
+    }
+  }, [Contextdata.UserLogin, Contextdata.UserData]);
+
   return (
     <>
       {isMobile &&

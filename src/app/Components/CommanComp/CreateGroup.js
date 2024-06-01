@@ -5,6 +5,7 @@ import CheckloginContext from '/context/auth/CheckloginContext'
 import Dialog from '@mui/material/Dialog';
 
 
+
 import { LuArrowLeft, LuSearch, LuChevronRight, LuMinus, } from "react-icons/lu";
 
 import Mstyles from "@/app/page.module.css";
@@ -97,21 +98,16 @@ const Demo = ({ SType }) => {
             {Contextdata.UserData.Role == 1 &&
 
                 <div>
-                    <div style={{ height: '15px' }}></div>
-                    <div className={Mstyles.craetegrpbtn}>
 
-                        <LoadingButton
-                            fullWidth
-                            onClick={handleClickOpen}
-                            startIcon={<LuPlus />}
-                            loading={false}
-                            loadingPosition="end"
-                            variant='contained'
-                        >
-                            <span>Create New Group</span>
-                        </LoadingButton>
-                    </div>
-                    <div style={{ height: '15px' }}></div>
+
+
+                    <IconButton
+                        onClick={handleClickOpen}
+
+                        style={{ width: 40, height: 40, }}
+                    >
+                        <LuPlus />
+                    </IconButton>
 
 
                     <Dialog

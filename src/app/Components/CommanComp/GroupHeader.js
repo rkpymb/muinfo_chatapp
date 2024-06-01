@@ -8,6 +8,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
 import { MediaFilesUrl, MediaFilesFolder } from '/Data/config'
 import { LuMoreVertical, LuPlus, LuUsers2 } from "react-icons/lu";
+
 import GroupMenu from '../CommanComp/GroupMenu'
 import IconButton from '@mui/material/IconButton';
 const GroupHeader = ({ GroupData, TotalMembers, OnlineInGroup,LeaveGroup }) => {
@@ -76,7 +77,7 @@ const GroupHeader = ({ GroupData, TotalMembers, OnlineInGroup,LeaveGroup }) => {
                         <Skeleton variant="text" sx={{ fontSize: '2rem' }} />
                     </div> :
                     <div>
-                        <GroupMenu LeaveGroup={LeaveGroup}/>
+                        <GroupMenu LeaveGroup={LeaveGroup} GroupData={GroupData} TotalMembers={TotalMembers}/>
                     </div>
                        
                     }

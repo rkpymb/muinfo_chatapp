@@ -7,10 +7,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import Mstyles from "@/app/page.module.css";
+import GroupInfo from '../CommanComp/GroupInfo'
 
 import { LuMoreVertical, LuPowerOff, LuInfo, LuSettings } from "react-icons/lu";
 
 import IconButton from '@mui/material/IconButton';
+import { useRouter } from 'next/navigation';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -53,8 +55,8 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function CustomizedMenus({ LeaveGroup }) {
-
+export default function CustomizedMenus({ LeaveGroup, GroupData,TotalMembers }) {
+    const router = useRouter()
     const Contextdata = useContext(CheckloginContext)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -85,18 +87,8 @@ export default function CustomizedMenus({ LeaveGroup }) {
             >
 
                 <div>
-                    <MenuItem onClick={handleClose} disableRipple>
-                        <div className={Mstyles.SmallMenuItem} onClick={LeaveGroup}>
-
-                            <div className={Mstyles.SmallMenuItemA}>
-                                <LuInfo />
-
-                            </div>
-                            <div className={Mstyles.SmallMenuItemB}>
-                                <span>Group Info</span>
-
-                            </div>
-                        </div>
+                    <MenuItem  disableRipple>
+                        <GroupInfo GroupData={GroupData}  TotalMembers={TotalMembers}/>
                     </MenuItem>
                     <MenuItem onClick={handleClose} disableRipple>
                         <div className={Mstyles.SmallMenuItem} onClick={LeaveGroup}>
@@ -112,9 +104,7 @@ export default function CustomizedMenus({ LeaveGroup }) {
                         </div>
                     </MenuItem>
                     {Contextdata.UserData.Role == 1 &&
-
-
-                        <MenuItem onClick={handleClose} disableRipple>
+                        <MenuItem onClick={() => router.push(`/group/setting/${GroupData.GroupID}`)} disableRipple>
                             <div className={Mstyles.SmallMenuItem}>
                                 <div className={Mstyles.SmallMenuItemA}>
                                     <LuSettings />
@@ -124,14 +114,9 @@ export default function CustomizedMenus({ LeaveGroup }) {
 
                                 </div>
                             </div>
-
                         </MenuItem>
-
                     }
                 </div>
-
-
-
 
             </StyledMenu>
         </div>

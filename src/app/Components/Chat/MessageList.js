@@ -171,17 +171,21 @@ const MessageList = ({ ParentID, socket, roomId }) => {
                         </div>
                         <div>
 
-                            <IconButton
-                                style={{ width: 30, height: 30, }}
-                                onClick={() => DeleteMsg(itemdata.PostData)}
-                                loading={false}
-                                desabled={false}
-                                loadingPosition="end"
+                            {MsgBy.username === Contextdata.UserData.username == 1 || Contextdata.UserData.Role == 1 ?
+                                <IconButton
+                                    style={{ width: 30, height: 30, }}
+                                    onClick={() => DeleteMsg(itemdata.PostData)}
+                                    loading={false}
+                                    desabled={false}
+                                    loadingPosition="end"
 
-                            >
-                                <BiTrash />
-                            </IconButton>
-                            <IconButton
+                                >
+                                    <BiTrash />
+                                </IconButton>: null
+                            }
+
+
+                            {/* <IconButton
                                 style={{ width: 30, height: 30, }}
                                 // onClick={send_group_msg}
                                 loading={false}
@@ -190,7 +194,7 @@ const MessageList = ({ ParentID, socket, roomId }) => {
 
                             >
                                 <BiMessageSquareEdit />
-                            </IconButton>
+                            </IconButton> */}
 
                         </div>
                     </div>

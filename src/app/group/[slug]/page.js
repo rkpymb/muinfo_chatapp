@@ -127,6 +127,7 @@ const page = ({ params }) => {
     };
 
     const GetData = async () => {
+       
         setLoading(true)
         const sendUM = { GroupID: slug }
         const data = await fetch("/api/user/group_data", {
@@ -147,6 +148,7 @@ const page = ({ params }) => {
                         setIsJoin(parsed.ReqData.IsJoin)
                         setTotalMembers(parsed.ReqData.TotalMembers)
                         setLoading(false)
+                        Contextdata.ChangeMainLoader(false)
 
 
 
@@ -181,9 +183,10 @@ const page = ({ params }) => {
             })
     }
     const LeaveGroup = async () => {
-
+       
         let text = "Do you want to leave this group ?";
         if (confirm(text) == true) {
+            Contextdata.ChangeMainLoader(true)
             const sendUM = { GroupID: slug }
             const data = await fetch("/api/user/leave_group", {
                 method: "POST",
@@ -198,8 +201,11 @@ const page = ({ params }) => {
 
                     setTimeout(function () {
                         if (parsed.ReqData && parsed.ReqData.done) {
-
+                            Contextdata.ChangeMainLoader(false)
                             router.push('/group')
+                        }else{
+                            
+                            Contextdata.ChangeMainLoader(false)
                         }
                     }, 3000);
                 })

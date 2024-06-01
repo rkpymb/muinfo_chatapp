@@ -10,6 +10,7 @@ import MyGroups from "./Components/CommanComp/MyGroups";
 import AutoLogin from "./Components/CommanComp/AutoLogin";
 
 import { ThemeProvider, CssBaseline, Button } from '@mui/material';
+import BackDropLoader from '../app/Components/CommanComp/BackDropLoader'
 import { darkTheme, lightTheme } from '@/app/themes/themes';
 
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
@@ -28,26 +29,22 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
 
-        <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
+        <ThemeProvider theme={lightTheme}>
+          <CssBaseline />
           <CheckloginStates >
+            <BackDropLoader />
             <div className={styles.Fullbg}>
               <div className={styles.Container}>
                 <div className={styles.ChatSection}>
                   {isBrowser &&
                     <div className={styles.ChatSectionA}>
                       <AutoLogin />
-
-
                       <AsideTop />
-
                       <MyGroups />
-
-                      <CreateGroup />
-
-
                     </div>
+
                   }
+                  
 
                   <div className={styles.ChatSectionB}>
                     {children}

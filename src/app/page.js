@@ -13,10 +13,11 @@ export default function Home() {
   useEffect(() => {
     if (Contextdata.UserLogin) {
       router.push('/group')
+      
+
     }
 
-
-  }, [Contextdata.UserLogin]);
+  }, [Contextdata.UserLogin, Contextdata.UserData]);
 
   return (
     <main className={styles.main}>

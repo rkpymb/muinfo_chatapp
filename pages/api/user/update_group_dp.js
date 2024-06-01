@@ -12,10 +12,10 @@ export default function handler(req, res) {
                 Authorization: `Bearer ${token}`,
             };
             
-            axios.post(`${process.env.API_URL}user/update_user_dp`, { 
+            axios.post(`${process.env.API_URL}chatapi/update_group_dp`, { 
                 token: process.env.MYKEY,
-               
-                dp: req.body.dp,
+                GroupID:req.body.GroupID,
+                GroupLogo: req.body.GroupLogo,
                
               
             }, { headers }).then((response) => {

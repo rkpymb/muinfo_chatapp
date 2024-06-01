@@ -128,7 +128,7 @@ const MyGroups = () => {
 
                 <div className={Mstyles.GroupGrid}>
                     {FeedList.map((item, index) => {
-                        return <div key={index} className={Mstyles.GroupItem} onClick={() => router.push(`/group/${item.GroupData.GroupID}`)}>
+                        return <div key={index} className={Mstyles.AllGroupItem} onClick={() => router.push(`/group/${item.GroupData.GroupID}`)}>
                             <div className={Mstyles.GroupItemTop}>
                                 <div className={Mstyles.GroupItemToA}>
                                     <div className={Mstyles.GroupItemLogo}>
