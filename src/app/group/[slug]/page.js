@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import Mstyles from "@/app/page.module.css";
 import GroupHeader from '../../Components/CommanComp/GroupHeader'
-
+import EmojiPicker from 'emoji-picker-react';
 import MessageList from '../../Components/Chat/MessageList'
 import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
@@ -10,6 +10,8 @@ import CheckloginContext from '/context/auth/CheckloginContext'
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 import { GrAttachment } from "react-icons/gr";
+
+import { LuXCircle, LuX } from "react-icons/lu";
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -26,8 +28,11 @@ const page = ({ params }) => {
     const [GroupData, setGroupData] = useState(null);
     const [EditorContent, setEditorContent] = useState(null);
     const [MsgText, setMsgText] = useState(null);
+    const [OpenEmojiPicker, setOpenEmojiPicker] = useState(false);
+    const [autoFocus, setAutoFocus] = useState(false);
     const [Loading, setLoading] = useState(true);
     const [LoadingBtn, setLoadingBtn] = useState(false);
+    const [OpenReplay, setOpenReplay] = useState(false);
     const [SendLoadingBtn, setSendLoadingBtn] = useState(false);
     const [IsJoin, setIsJoin] = useState(null);
     const [TotalMembers, setTotalMembers] = useState(0);
@@ -36,6 +41,7 @@ const page = ({ params }) => {
 
     const [roomId, setRoomId] = useState(null);
     const [socket, setSocket] = useState(null);
+    const [ReplayForMsg, setReplayForMsg] = useState(null);
 
     const blurredImageData = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88enTfwAJYwPNteQx0wAAAABJRU5ErkJggg==';
 
@@ -55,12 +61,12 @@ const page = ({ params }) => {
             });
 
             newSocket.on('connect', () => {
-                console.log('Connected to server');
+              
 
             });
 
             newSocket.on('disconnect', () => {
-                console.log('Disconnected from server');
+           
 
                 if (roomId) {
                     newSocket.emit('LeaveRoom', roomId);
@@ -104,13 +110,14 @@ const page = ({ params }) => {
 
     useEffect(() => {
         setRoomId(slug)
+
         if (slug) {
             GetData()
         }
     }, [slug]);
 
     useEffect(() => {
-        console.log(OnlineUsers)
+      
         setOnlineInGroup(OnlineUsers.length)
     }, [OnlineUsers]);
 
@@ -121,13 +128,40 @@ const page = ({ params }) => {
         setMsgText(event.target.value);
     };
 
-    const handleClick = () => {
-        const formattedText = MsgText.replace(/\n/g, '<br />');
-        setEditorContent(formattedText);
+    const OpenEmoji = () => {
+        if (OpenEmojiPicker === true) {
+            setOpenEmojiPicker(false);
+        } else {
+            setOpenEmojiPicker(true);
+        }
+
+
+    };
+    const ClickEmoji = (e) => {
+      
+        if (MsgText !== null) {
+            setMsgText((prevText) => prevText + e.emoji);
+        } else {
+            setMsgText(e.emoji);
+        }
+
+
+    };
+
+    const ClickReply = (Msg) => {
+      
+        setReplayForMsg(Msg);
+        setOpenReplay(true)
+
+    };
+    const CloseReplay = () => {
+        setOpenReplay(false)
+        setReplayForMsg(null)
+
     };
 
     const GetData = async () => {
-       
+
         setLoading(true)
         const sendUM = { GroupID: slug }
         const data = await fetch("/api/user/group_data", {
@@ -143,7 +177,7 @@ const page = ({ params }) => {
 
                 setTimeout(function () {
                     if (parsed.ReqData && parsed.ReqData.Group) {
-                        console.log(parsed.ReqData.Group)
+                     
                         setGroupData(parsed.ReqData.Group)
                         setIsJoin(parsed.ReqData.IsJoin)
                         setTotalMembers(parsed.ReqData.TotalMembers)
@@ -183,7 +217,7 @@ const page = ({ params }) => {
             })
     }
     const LeaveGroup = async () => {
-       
+
         let text = "Do you want to leave this group ?";
         if (confirm(text) == true) {
             Contextdata.ChangeMainLoader(true)
@@ -203,8 +237,8 @@ const page = ({ params }) => {
                         if (parsed.ReqData && parsed.ReqData.done) {
                             Contextdata.ChangeMainLoader(false)
                             router.push('/group')
-                        }else{
-                            
+                        } else {
+
                             Contextdata.ChangeMainLoader(false)
                         }
                     }, 3000);
@@ -214,12 +248,69 @@ const page = ({ params }) => {
 
     }
     const send_group_msg = async () => {
-        if (MsgText !== null) {
+        if (OpenReplay) {
+            const ReplyOf = {
+                ParentMsgID: ReplayForMsg.PostData._id,
+                ReplayFor: ReplayForMsg.PostData.UserData,
+            }
+            SendMsgReplay(ReplyOf)
+        } else {
+            SendMsg()
+        }
+
+    }
+    const SendMsgReplay = async (ReplyOf) => {
+
+        if (MsgText !== null && ReplyOf) {
+            setOpenEmojiPicker(false)
             setSendLoadingBtn(true)
             const sendUM = {
                 GroupID: slug,
                 ChatType: 'Text',
                 ChatText: MsgText,
+                ReplyOf: ReplyOf
+
+            }
+            const data = await fetch("/api/user/send_group_msg_replay", {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(sendUM)
+            }).then((a) => {
+                return a.json();
+            })
+                .then((parsed) => {
+
+                    setTimeout(function () {
+                        if (parsed.ReqData && parsed.ReqData.done) {
+
+                            setMsgText('')
+                            const SoketData = parsed.ReqData.NewData
+                            socket.emit('NewGroupMessage', { SoketData, roomId });
+                            setSendLoadingBtn(false)
+                            setReplayForMsg(null)
+                            setOpenReplay(false)
+
+
+
+
+                        }
+                    }, 100);
+                })
+        }
+
+    }
+    const SendMsg = async () => {
+
+        if (MsgText !== null) {
+            setOpenEmojiPicker(false)
+            setSendLoadingBtn(true)
+            const sendUM = {
+                GroupID: slug,
+                ChatType: 'Text',
+                ChatText: MsgText,
+
             }
             const data = await fetch("/api/user/send_group_msg", {
                 method: "POST",
@@ -242,6 +333,7 @@ const page = ({ params }) => {
 
 
 
+
                         }
                     }, 100);
                 })
@@ -259,53 +351,87 @@ const page = ({ params }) => {
                 <div className={Mstyles.Chatbox}
                     id="scrollableDiv"
                 >
-                    {!Loading &&
-                        <MessageList ParentID={slug} socket={socket} roomId={roomId} />
-                    }
+                   <MessageList ParentID={slug} socket={socket} roomId={roomId} ClickReply={ClickReply} />
 
                 </div>
                 {!Loading &&
                     <div className={Mstyles.ChatboxFotter}>
                         {IsJoin !== null ?
-                            <div className={Mstyles.ChatWritebox}>
-                                <div className={Mstyles.ChatWriteboxA}>
-                                    <IconButton
-                                        style={{ width: 45, height: 45, }}
-                                        onClick={handleClick}
-                                    >
-                                        <GrAttachment />
-                                    </IconButton>
+                            <div>
+                                {OpenReplay &&
+
+
+                                    <div className={Mstyles.ReplayBox}>
+                                        <div className={Mstyles.ReplayBoxTop}>
+                                            <div className={Mstyles.ReplayBoxTopA}>
+                                                <div>
+                                                    <span>Replying to </span> <span style={{ fontWeight: 700 }}> {ReplayForMsg && ReplayForMsg.Profile.name}</span>
+                                                </div>
+
+                                            </div>
+                                            <div className={Mstyles.ReplayBoxTopB}>
+                                                <IconButton
+                                                    style={{ width: 40, height: 40, }}
+                                                    onClick={CloseReplay}
+                                                >
+                                                    <LuX />
+                                                </IconButton>
+
+                                            </div>
+                                        </div>
+                                        <div className={Mstyles.ReplayMsgFor}>
+                                            {ReplayForMsg && ReplayForMsg.PostData.ChatData[0].ChatText}
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                                <EmojiPicker
+                                    open={OpenEmojiPicker}
+                                    onEmojiClick={(e) => ClickEmoji(e)}
+                                />
+                                <div className={Mstyles.ChatWritebox}>
+                                    <div className={Mstyles.ChatWriteboxA}>
+                                        <IconButton
+                                            style={{ width: 45, height: 45, }}
+                                            onClick={OpenEmoji}
+                                        >
+                                            {OpenEmojiPicker ? <LuXCircle /> : <span>😊</span>}
+                                        </IconButton>
+                                    </div>
+
+                                    <div className={Mstyles.ChatWriteboxB}>
+
+                                        <TextField
+                                            placeholder={OpenReplay ? "write replay ..." : "write message ..."}
+                                            autoFocus={autoFocus}
+                                            multiline
+                                            fullWidth
+                                            variant="standard"
+                                            maxRows={4}
+                                            value={MsgText}
+                                            onChange={handleChange}
+
+                                        />
+                                    </div>
+                                    <div className={Mstyles.ChatWriteboxC}>
+
+                                        <IconButton
+                                            style={{ width: 45, height: 45, }}
+                                            onClick={send_group_msg}
+                                            loading={SendLoadingBtn}
+                                            desabled={SendLoadingBtn}
+                                            loadingPosition="end"
+
+                                        >
+                                            <LuSendHorizonal />
+                                        </IconButton>
+
+
+                                    </div>
+
                                 </div>
-                                <div className={Mstyles.ChatWriteboxB}>
-
-                                    <TextField
-                                        placeholder="Write message ..."
-                                        autoFocus={true}
-                                        multiline
-                                        fullWidth
-                                        variant="standard"
-                                        maxRows={4}
-                                        value={MsgText}
-                                        onChange={handleChange}
-
-                                    />
-                                </div>
-                                <div className={Mstyles.ChatWriteboxC}>
-
-                                    <IconButton
-                                        style={{ width: 45, height: 45, }}
-                                        onClick={send_group_msg}
-                                        loading={SendLoadingBtn}
-                                        desabled={SendLoadingBtn}
-                                        loadingPosition="end"
-
-                                    >
-                                        <LuSendHorizonal />
-                                    </IconButton>
-
-
-                                </div>
-
                             </div> :
                             null
                         }

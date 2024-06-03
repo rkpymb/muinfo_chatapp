@@ -12,12 +12,12 @@ export default function handler(req, res) {
                 Authorization: `Bearer ${token}`,
             };
             
-            axios.post(`${process.env.API_URL}chatapi/send_group_msg`, { 
+            axios.post(`${process.env.API_URL}chatapi/send_group_msg_replay`, { 
                 token: process.env.MYKEY,
                 GroupID: req.body.GroupID,
                 ChatType:req.body.ChatType,
                 ChatText:req.body.ChatText,
-              
+                ReplyOf:req.body.ReplyOf
                 
 
               

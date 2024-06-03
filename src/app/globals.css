@@ -95,11 +95,15 @@ a {
   background: #eee;
   color: #666;
 }
-
+.time-text{
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 700;
+}
 .msger-chat {
   flex: 1;
   overflow-y: auto;
-  padding: 10px;
+  padding: 5px 5px 5px 5px;
 }
 .msger-chat::-webkit-scrollbar {
   width: 6px;
@@ -134,19 +138,36 @@ a {
   padding: 15px;
   border-radius: 15px;
   background: var(--left-msg-bg);
+  overflow: hidden;
 }
 .msg-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
+  width: 100%;
+  
 }
 .msg-info-name {
-  margin-right: 10px;
-  font-weight: bold;
+
+  font-weight: 700;
+  font-size: 12px;
+  width: 75%;
+  overflow: hidden;
+
+
+  white-space: nowrap; 
+  overflow: hidden;   
+  text-overflow: ellipsis;
+ 
 }
 .msg-info-time {
-  font-size: 0.60em;
+  min-width: 20%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  
 }
 
 .left-msg .msg-bubble {

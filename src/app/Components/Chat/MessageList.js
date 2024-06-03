@@ -10,24 +10,31 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Mstyles from "@/app/page.module.css";
 
 import CheckloginContext from '/context/auth/CheckloginContext'
+
+
+import Image from 'next/image';
 import { MediaFilesUrl, MediaFilesFolder } from '/Data/config'
 
-import { BiMessageSquareEdit, BiTrash } from "react-icons/bi";
-
+import { LuMoreVertical } from "react-icons/lu";
 import IconButton from '@mui/material/IconButton';
 
 let defaultStartIndex = 1;
 let hasMore = true;
 
-const MessageList = ({ ParentID, socket, roomId }) => {
+const MessageList = ({ ParentID, socket, roomId, ClickReply }) => {
     const Contextdata = useContext(CheckloginContext)
     const [FeedList, setFeedList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [PageNo, setPageNo] = useState(1);
     const [loading, setLoading] = useState(false);
     const [scrollToKey, setScrollToKey] = useState(null);
+    const [activeItem, setActiveItem] = useState(null);
     const itemRefs = useRef({});
     const containerRef = useRef(null);
+
+    const [IsExpended, setIsExpended] = useState(false);
+
+    const blurredImageData = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88enTfwAJYwPNteQx0wAAAABJRU5ErkJggg==';
 
     const limit = 5;
 
@@ -98,14 +105,13 @@ const MessageList = ({ ParentID, socket, roomId }) => {
             setLoading(false);
         }
     };
+
     const DeleteMsg = async (msg) => {
         const confirmDelete = window.confirm("Do you really want to delete this Message?");
         if (confirmDelete) {
-            console.log(msg)
-            // setLoading(true);
+
             const sendUM = {
                 msg: msg,
-
             };
 
             try {
@@ -124,22 +130,22 @@ const MessageList = ({ ParentID, socket, roomId }) => {
                 const parsed = await response.json();
 
                 if (parsed.ReqData.done) {
-                    console.log(parsed.ReqData)
+
                     const msg_id = parsed.ReqData.msg_id
                     socket.emit('DeletedMessage', { msg_id, roomId });
-
-
-
                 }
-
-
             } catch (error) {
                 console.error('Error fetching data:', error);
-
             }
         }
+    };
 
-
+    const Expendmsg = async () => {
+        if (IsExpended == true) {
+            setIsExpended(false)
+        } else {
+            setIsExpended(true)
+        }
     };
 
     useEffect(() => {
@@ -151,8 +157,16 @@ const MessageList = ({ ParentID, socket, roomId }) => {
     const Item = forwardRef(({ itemdata }, ref) => {
         const MsgBy = itemdata.Profile;
         const Userdp = `url(${MediaFilesUrl}${MediaFilesFolder}${MsgBy.dp})`
+        const isActive = activeItem === itemdata.PostData._id;
+
+        const handleClick = () => {
+            setActiveItem((prevActiveItem) =>
+                prevActiveItem === itemdata.PostData._id ? null : itemdata.PostData._id
+            );
+        };
+
         return (
-            <main className="msger-chat" ref={ref}>
+            <main className="msger-chat" ref={ref} >
                 <div className={MsgBy.username === Contextdata.UserData.username ? "msg right-msg" : "msg left-msg"}>
                     <div
                         className="msg-img"
@@ -162,41 +176,77 @@ const MessageList = ({ ParentID, socket, roomId }) => {
                     />
                     <div>
                         <div className="msg-bubble">
+
                             <div className="msg-info">
                                 <div className="msg-info-name">{MsgBy.name}</div>
-                                <div className="msg-info-time">{itemdata.PostData.time}</div>
+
+                                <div className="msg-info-time">
+                                    {MsgBy.username === Contextdata.UserData.username && !isActive ?
+                                        <IconButton
+                                            onClick={handleClick}
+                                            style={{
+                                                width: 30, height: 30,
+                                                color: 'white'
+                                            }}
+                                        >
+                                            <LuMoreVertical />
+                                        </IconButton> :
+                                        <div className={Mstyles.MsgBtnsBox}>
+                                            {(MsgBy.username === Contextdata.UserData.username || Contextdata.UserData.Role == 1) && (
+                                                <div className={Mstyles.MsgBtns} >
+                                                    <Image
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            DeleteMsg(itemdata.PostData);
+                                                        }}
+                                                        src={`/svg/delete.svg`}
+                                                        alt=""
+                                                        height={20}
+                                                        width={20}
+
+                                                        className={MsgBy.username === Contextdata.UserData.username ? Mstyles.whiteImage : Mstyles.blackImage}
+
+                                                    />
+                                                </div>
+
+                                            )}
+
+                                            <div className={Mstyles.MsgBtns}>
+                                                <Image
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        ClickReply(itemdata);
+                                                    }}
+                                                    src={`/svg/reply.svg`}
+
+                                                    height={20}
+                                                    width={20}
+
+                                                    className={MsgBy.username === Contextdata.UserData.username ? Mstyles.whiteImage : Mstyles.blackImage}
+
+                                                />
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                </div>
                             </div>
-                            <div className="msg-text">{itemdata.PostData.ChatData[0].ChatText}</div>
+                            {itemdata.ReplyOf &&
+                                <div className={Mstyles.ReplayMsgitem} onClick={Expendmsg}>
+                                    <div className={Mstyles.ReplayforName}>
+                                        {itemdata.ReplyOf[0].name}
+                                    </div>
+                                    <div className={IsExpended ? Mstyles.ReplayMsgitemTextFull : Mstyles.ReplayMsgitemText}>{itemdata.ReplyOf[0].PostData.ChatData[0].ChatText}
+                                    </div>
 
-                        </div>
-                        <div>
+                                </div>
 
-                            {MsgBy.username === Contextdata.UserData.username == 1 || Contextdata.UserData.Role == 1 ?
-                                <IconButton
-                                    style={{ width: 30, height: 30, }}
-                                    onClick={() => DeleteMsg(itemdata.PostData)}
-                                    loading={false}
-                                    desabled={false}
-                                    loadingPosition="end"
-
-                                >
-                                    <BiTrash />
-                                </IconButton>: null
                             }
-
-
-                            {/* <IconButton
-                                style={{ width: 30, height: 30, }}
-                                // onClick={send_group_msg}
-                                loading={false}
-                                desabled={false}
-                                loadingPosition="end"
-
-                            >
-                                <BiMessageSquareEdit />
-                            </IconButton> */}
-
+                            <div className="msg-text">{itemdata.PostData.ChatData[0].ChatText}</div>
+                            <div className="time-text">{itemdata.formattedDate}</div>
                         </div>
+
                     </div>
                 </div>
             </main>
@@ -207,14 +257,13 @@ const MessageList = ({ ParentID, socket, roomId }) => {
         setFeedList((prevData) => {
             const itemExists = prevData.some(item => item.PostData._id == id);
             if (!itemExists) {
-                console.log(`Item with id ${id} not found in FeedList`);
+
                 return prevData;
             }
-            console.log(`Removing item with id ${id} from FeedList`);
+
             return prevData.filter(item => item.PostData._id !== id);
         });
     };
-
 
     useEffect(() => {
         if (socket) {
@@ -222,7 +271,7 @@ const MessageList = ({ ParentID, socket, roomId }) => {
                 const newMessage = data.data.SoketData;
                 addNewMessage(newMessage);
                 setScrollToKey(data.data.SoketData[0].PostData._id);
-                console.log(data.data.SoketData)
+
             });
             socket.on('DeletedMessage', (data) => {
                 const Del_msg_Id = data.data.msg_id;
@@ -234,8 +283,6 @@ const MessageList = ({ ParentID, socket, roomId }) => {
     const addNewMessage = (newMessage) => {
         setFeedList((prevData) => removeDuplicates([...prevData, ...newMessage]));
     };
-
-
 
     const removeDuplicates = (list) => {
         const uniqueIds = new Set();
@@ -271,18 +318,11 @@ const MessageList = ({ ParentID, socket, roomId }) => {
                     ))}
                 </div>
             </main>
-
-
-            {loading &&
-
+            {loading && (
                 <div className={Mstyles.CenterLoader}>
                     <CircularProgress />
-
                 </div>
-
-
-            }
-
+            )}
         </div>
     );
 };
