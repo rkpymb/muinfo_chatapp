@@ -173,9 +173,14 @@
   font-weight: 600;
   font-size: 15px;
 }
+.Description{
+  max-width: 100%;
+  overflow: hidden;
+}
 
 .Description span {
   font-weight: 500;
+  white-space: wrap;
   font-size: 12px;
 }
 
@@ -1006,6 +1011,8 @@
     padding: 0px 20px 20px 20px;
     display: flex;
     flex-direction: column;
+    width:100%;
+
   }
 
   .Mh {

@@ -12,7 +12,7 @@ export default function handler(req, res) {
                 Authorization: `Bearer ${token}`,
             };
 
-            axios.post(`${process.env.API_URL}user/create_group`, {
+            axios.post(`${process.env.API_URL}chatapi/create_group`, {
                 token: process.env.MYKEY,
 
                 GroupName: req.body.GroupName,
