@@ -5,6 +5,8 @@ export const MediaFilesFolder = 'content/'
 export const FeedimgFolder = 'content'
 export const AdvtContentfolder = 'advt'
 export const FeedVideosBaseUrl = `${MediaFilesUrl}user/FeedvideosStream/`
+
+export const Login_url="https://magadhuniversityinfo.com/account/user_login"
 export const AppVersionCode = '2.0'
 export const GoogleMapsAPI = 'AIzaSyCd2G5EyfBZtKccEVM24VNGHRm3r_4cOa0'
 export const SvgLogo = 'https://api.magadhuniversityinfo.com/images/mu_logo.svg'

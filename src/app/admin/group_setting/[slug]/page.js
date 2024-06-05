@@ -3,22 +3,17 @@ import React, { useRef, useState, useEffect, useContext } from "react";
 import Mstyles from "@/app/page.module.css";
 import TitleNav from '../../../Components/CommanComp/TitleNav'
 
-import MessageList from '../../../Components/Chat/MessageList'
 import Skeleton from '@mui/material/Skeleton';
-import IconButton from '@mui/material/IconButton';
+
 import CheckloginContext from '/context/auth/CheckloginContext'
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
-import { GrAttachment } from "react-icons/gr";
 
 import GroupDpUploaderUpdate from '../../../Components/CommanComp/GroupDpUploaderUpdate'
 
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { MediaFilesUrl, MediaFilesFolder, API_URL } from '/Data/config'
 
-
-import { LuArrowLeft, LuSearch, LuChevronRight, LuMinus, } from "react-icons/lu";
+import { LuArrowLeft, LuSearch, LuChevronRight, LuTrash, } from "react-icons/lu";
 
 const page = ({ params }) => {
     const router = useRouter()
@@ -63,7 +58,7 @@ const page = ({ params }) => {
 
                 setTimeout(function () {
                     if (parsed.ReqData && parsed.ReqData.Group) {
-                        console.log(parsed.ReqData.Group)
+
                         setGroupData(parsed.ReqData.Group)
                         setGroupName(parsed.ReqData.Group.GroupName)
                         setDescription(parsed.ReqData.Group.Description)
@@ -98,7 +93,7 @@ const page = ({ params }) => {
 
 
     const UpdateGroup = async () => {
-        console.log(GroupData)
+
         if (GroupName !== null && Tagline !== null && Description !== null) {
             setLoadingBtn(true)
             const sendUM = {
@@ -120,12 +115,44 @@ const page = ({ params }) => {
                     setLoadingBtn(false)
                     if (parsed.ReqData.done) {
                         Contextdata.ChangeAlertData(`Group Updated`, 'success');
-    
-                    }else{
+
+                    } else {
                         Contextdata.ChangeAlertData(`Something Went Wrong`, 'warning');
                     }
 
-                   
+
+                })
+        }
+    }
+    const delete_group = async () => {
+
+        if (GroupData) {
+            setLoadingBtn(true)
+            const sendUM = {
+                
+                GroupID: GroupData.GroupID,
+              
+            }
+            const data = await fetch("/api/user/delete_group", {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(sendUM)
+            }).then((a) => {
+                return a.json();
+            })
+                .then((parsed) => {
+                    
+                    if (parsed.ReqData.done) {
+                        Contextdata.ChangeAlertData(`Group Deleted`, 'success');
+                        router.push('/group')
+
+                    } else {
+                        Contextdata.ChangeAlertData(`Something Went Wrong`, 'warning');
+                    }
+
+
                 })
         }
     }
@@ -133,7 +160,7 @@ const page = ({ params }) => {
         <TitleNav title={'Group Settings'} />
 
         <div className={Mstyles.PageBox}>
-            {GroupData && IsJoin &&
+            {GroupData && IsJoin ?
                 <div className={Mstyles.GroupSHBox}>
                     <div className={Mstyles.EditPBoxProfile}>
                         <GroupDpUploaderUpdate onImageUpload={onImageUpload} GroupData={GroupData} />
@@ -200,6 +227,46 @@ const page = ({ params }) => {
 
                     </div>
 
+
+                    <div className={Mstyles.GroupSHBoxEdit}>
+
+                        <div className={Mstyles.fadeinAnimation}>
+
+                            <div className={Mstyles.FormTitle}>
+                                <span>Delete Group</span>
+                               <div>
+                               <small>This action will delete all data related to this group</small>
+                               </div>
+                            </div>
+                            <div className={Mstyles.formbtn}>
+                                <LoadingButton
+                                    fullWidth
+                                    onClick={delete_group}
+                                    endIcon={<LuTrash />}
+                                    loading={LoadingBtn}
+                                    desabled={LoadingBtn}
+                                    loadingPosition="end"
+                                    variant='outlined'
+                                >
+                                    <span>Delete Group</span>
+                                </LoadingButton>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div> :
+                <div style={{ width: '90%', margin: 'auto' }}>
+                    <Skeleton variant="text" sx={{ fontSize: '1rem', width: '30%' }} />
+                    <div style={{ height: '10px' }}></div>
+                    <Skeleton variant="text" sx={{ fontSize: '1rem', width: '60%' }} />
+                    <div style={{ height: '2px' }}></div>
+                    <Skeleton variant="text" sx={{ fontSize: '1rem', width: '65%' }} />
+                    <div style={{ height: '2px' }}></div>
+                    <Skeleton variant="text" sx={{ fontSize: '1rem', width: '70%' }} />
                 </div>
 
             }

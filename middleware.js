@@ -77,7 +77,7 @@ export async function middleware(request) {
     }
   }
 
-  const MainAdminOnly = ['/p/edit/',];
+  const MainAdminOnly = ['/admin/'];
 
   if (MainAdminOnly.some(path => request.nextUrl.pathname.startsWith(path))) {
     const { response, isValid, redirect, data } = await checkUserAuthentication(request);
@@ -90,6 +90,7 @@ export async function middleware(request) {
     if (isValid) {
      
       if (data.UserData.Role == 1) {
+      
         return response;
       } else {
         return NextResponse.redirect(new URL('/', request.url));

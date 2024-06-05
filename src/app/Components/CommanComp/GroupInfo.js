@@ -37,7 +37,7 @@ export default function GroupInfo({ GroupData, TotalMembers }) {
             {open ?
                 <div>
                     <Backdrop
-                       
+                       onClick={handleClose}
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={open}
 

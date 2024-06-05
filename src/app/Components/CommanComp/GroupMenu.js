@@ -104,7 +104,7 @@ export default function CustomizedMenus({ LeaveGroup, GroupData,TotalMembers }) 
                         </div>
                     </MenuItem>
                     {Contextdata.UserData.Role == 1 &&
-                        <MenuItem onClick={() => router.push(`/group/setting/${GroupData.GroupID}`)} disableRipple>
+                        <MenuItem onClick={() => router.push(`/admin/group_setting/${GroupData.GroupID}`)} disableRipple>
                             <div className={Mstyles.SmallMenuItem}>
                                 <div className={Mstyles.SmallMenuItemA}>
                                     <LuSettings />

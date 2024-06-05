@@ -100,9 +100,11 @@ const MyGroups = () => {
 
     useEffect(() => {
 
-        GetData();
+        if (Contextdata.UserLogin) {
+            GetData();
+        }
 
-    }, [count])
+    }, [Contextdata.UserData])
 
     return (
         <div>
@@ -122,7 +124,7 @@ const MyGroups = () => {
                 loader={<div style={{ textAlign: 'center', margin: 'auto', marginTop: '20px' }} >
                     <CircularProgress size={25} color="success" />
                 </div>}
-              
+
             >
 
 
@@ -173,7 +175,7 @@ const MyGroups = () => {
 
 
             </InfiniteScroll>
-            
+
 
 
 

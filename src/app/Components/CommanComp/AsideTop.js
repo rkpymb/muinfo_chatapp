@@ -13,12 +13,18 @@ const AsideTop = () => {
 
     const Contextdata = useContext(CheckloginContext)
     const blurredImageData = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88enTfwAJYwPNteQx0wAAAABJRU5ErkJggg==';
+    const [Loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        if (Contextdata.UserLogin) {
+            setLoading(false)
+        }
+    }, [Contextdata.UserLogin]);
     return (
         <div className={Mstyles.AsideTop}>
             <div className={Mstyles.AsideTopA}>
                 <div className={Mstyles.UserAvatar}>
-                    {!Contextdata.UserLogin ?
+                    {Loading ?
                         <Skeleton variant="circular" animation='wave' width={40} height={40} /> :
 
                         <Image
@@ -34,7 +40,7 @@ const AsideTop = () => {
 
                 </div>
 
-                {!Contextdata.UserLogin ?
+                {Loading ?
                     <div className={Mstyles.AsideTopText}>
                         <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={60} />
                         <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={100} />
@@ -49,10 +55,10 @@ const AsideTop = () => {
             </div>
             <div className={Mstyles.AsideTopB}>
 
+
                 {Contextdata.UserData.Role == 1 &&
                     <CreateGroup />
                 }
-
 
             </div>
 

@@ -303,7 +303,7 @@ const page = ({ params }) => {
     }
     const SendMsg = async () => {
 
-        if (MsgText !== null) {
+        if (MsgText !== null & MsgText !== '') {
             setOpenEmojiPicker(false)
             setSendLoadingBtn(true)
             const sendUM = {
